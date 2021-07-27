@@ -30,8 +30,6 @@ This program heavily relies on code from packages listed below.
 
 - https://www.npmjs.com/package/input-event
 - https://www.npmjs.com/package/@tviso/keyboard-linux
-- Read Linux Inputs in node.js, Author: Daniel Risacher (dan@risacher.org)
-- Adapted from keyboard.js by... Author: William Petit (william.petit@lookingfora.name)
-- Adapted from Tim Caswell's nice solution to read a linux joystick
-- http://nodebits.org/linux-joystick
+- Read Linux Inputs in node.js, Author: Daniel R.
+- keyboard.js
 - https://github.com/nodebits/linux-joystick
