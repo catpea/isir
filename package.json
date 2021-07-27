@@ -1,0 +1,25 @@
+{
+  "name": "isir",
+  "type":"module",
+  "version": "1.0.0",
+  "description": "Remote control raspberry pi via a Bluetooth keyboard or a remote shutter device.",
+  "main": "src/index.js",
+  "scripts": {
+    "save": "git add .; git commit -m 'New Release'; git push; npm version patch; npm publish; git push;",
+    "test": "./test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/catpea/isir.git"
+  },
+  "keywords": [],
+  "author": "catpea <corporate.miou@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/catpea/isir/issues"
+  },
+  "homepage": "https://github.com/catpea/isir#readme",
+  "dependencies": {
+
+  }
+}
