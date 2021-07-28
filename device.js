@@ -34,7 +34,7 @@ class HumanInterfaceDevice extends EventEmitter {
   }
 
   parse(input, buffer) {
-    const event = { arch, process.arch, hex: this.#buffer.toString('hex'), device: this.#inputDevice, };
+    const event = { arch: process.arch, hex: this.#buffer.toString('hex'), device: this.#inputDevice, };
     if (process.arch === "x64") {
       Object.assign(event, { timeS: this.#buffer.readUIntLE(0, 4), timeMS: this.#buffer.readUIntLE(8, 4), type: this.#buffer.readUInt16LE(16), code: this.#buffer.readUInt16LE(18), value: this.#buffer.readInt32LE(20), });
     } else { // arm or ia32
