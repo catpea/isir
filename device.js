@@ -34,35 +34,16 @@ class HumanInterfaceDevice extends EventEmitter {
   }
 
   parse(input, buffer) {
-
-    const event = {
-      hex: this.#buffer.toString('hex'),
-      device: this.#inputDevice,
-    };
-
+    const event = { arch, process.arch, hex: this.#buffer.toString('hex'), device: this.#inputDevice, };
     if (process.arch === "x64") {
-      Object.assign(event, {
-        timeS: this.#buffer.readUIntLE(0, 4),
-        timeMS: this.#buffer.readUIntLE(8, 4),
-        type: this.#buffer.readUInt16LE(16),
-        code: this.#buffer.readUInt16LE(18),
-        value: this.#buffer.readInt32LE(20),
-      });
-    } else {
-      // arm or ia32
-      Object.assign(event, {
-        timeS: this.#buffer.readUInt32LE(0, 4),
-        timeMS: this.#buffer.readUInt32LE(4, 4),
-        type: this.#buffer.readUInt16LE(8),
-        code: this.#buffer.readUInt16LE(10),
-        value: this.#buffer.readInt32LE(12),
-      });
+      Object.assign(event, { timeS: this.#buffer.readUIntLE(0, 4), timeMS: this.#buffer.readUIntLE(8, 4), type: this.#buffer.readUInt16LE(16), code: this.#buffer.readUInt16LE(18), value: this.#buffer.readInt32LE(20), });
+    } else { // arm or ia32
+      Object.assign(event, { timeS: this.#buffer.readUInt32LE(0, 4), timeMS: this.#buffer.readUInt32LE(4, 4), type: this.#buffer.readUInt16LE(8), code: this.#buffer.readUInt16LE(10), value: this.#buffer.readInt32LE(12), });
     }
-
-    event.name = metadata.inputEventTypesIndex[event.type]?.event;
+    event.typeName = metadata.inputEventTypesIndex[event.type]?.event;
     event.codeName = metadata.inputEventTypesIndex[event.type]?.events[event.code]
-    event.stateName = metadata.inputEventTypesIndex[event.type]?.states[event.value]
-    event.text = `Event: time ${event.timeS}.${event.timeMS}, type ${event.type} (${event.name}), code ${event.code} (${event.codeName}), value ${(event.value).toString(16)}`
+    event.valueName = metadata.inputEventTypesIndex[event.type]?.states[event.value]
+    event.text = `Event: time ${event.timeS}.${event.timeMS}, type ${event.type} (${event.typeName}), code ${event.code} (${event.codeName}), value ${(event.value).toString(16)}`
 
     const separator = ((event.type===0)&&(event.value===0));
     if(separator) event.text = `Event: time ${event.timeS}.${event.timeMS}, -------------- ${event.codeName} ------------`
