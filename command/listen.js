@@ -8,8 +8,11 @@ const program = new Command();
 const log = debug('listen');
 
 program
-  .version('1.0.0')
-  .option('-a, --assign <text>', 'assign mode');
+  .option('-t, --type <number>', 'filter by type')
+  .option('-c, --code <number>', 'filter by code')
+  .option('-v, --value <number>', 'filter by value')
+  .option('-d, --debug', 'debug mode')
+  .version('1.0.0');
 
 program.parse(process.argv);
 const options = program.opts();
@@ -24,7 +27,43 @@ for (var device of devices) {
   const hid = new HumanInterfaceDevice();
   log(`Opening: ${device}`);
   hid.open(device);
-  hid.on("keypress", (event) => {
-    console.log(event);
+
+  hid.on("*", (event) => {
+
+    if(options.type !== undefined){
+      if(event.type == options.type){
+        //console.log(`event.type (${event.type}) == options.type(${options.type})`);
+      }else{
+        return;
+      }
+    }
+
+    if(options.code !== undefined){
+      if(event.code == options.code){
+        //console.log(`event.code (${event.code}) == options.code(${options.code})`);
+      }else{
+        return;
+      }
+    }
+
+    if(options.value !== undefined){
+      if(event.value == options.value){
+        //console.log(`event.value (${event.value}) == options.value(${options.value})`);
+      }else{
+        return;
+      }
+    }
+
+    if(options.debug){
+      console.log(event);
+    }else{
+      console.log(event.text);
+    }
+
   });
+
+  // hid.on("keypress", (event) => {
+  //   //console.log(event);
+  // });
+
 }

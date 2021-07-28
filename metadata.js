@@ -1,5 +1,8 @@
-// buttons
-var buttons = {};
+
+
+
+
+const buttons = {};
 
 buttons["KEY_ESC"] = 1;
 buttons["KEY_1"] = 2;
@@ -388,7 +391,21 @@ axes["REL_DIAL"] = 0x07;
 axes["REL_WHEEL"] = 0x08;
 axes["REL_MISC"] = 0x09;
 
-var buttonsIndex = {};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const buttonsIndex = {};
 for (let key in buttons) {
   buttonsIndex[buttons[key]] = key;
 }
@@ -398,9 +415,139 @@ for (let key in axes) {
   axesIndex[axes[key]] = key;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const inputEventTypes = [
+      {
+        id: 0x00,
+        event: 'EV_SYN',
+        description: 'Used as markers to separate events. Events may be separated in time or in space, such as with the multitouch protocol.',
+        events: [ 'SYN_REPORT', 'SYN_CONFIG', 'SYN_MT_REPORT', 'SYN_DROPPED' ],
+        states: [],
+      },
+      {
+        id: 0x01,
+        event: 'EV_KEY',
+        description: 'Used to describe state changes of keyboards, buttons, or other key-like devices.',
+        events: buttonsIndex,
+        states: [ 'KEYUP', 'KEYPRESS', 'KEYDOWN_AUTOREPEAT' ],
+      },
+      {
+        id: 0x02,
+        event: 'EV_REL',
+        description: 'Used to describe relative axis value changes, e.g. moving the mouse 5 units to the left.',
+        events: axesIndex,
+        states: [],
+      },
+      {
+        id: 0x03,
+        event: 'EV_ABS',
+        description: 'Used to describe absolute axis value changes, e.g. describing the coordinates of a touch on a touchscreen.',
+        events: axesIndex,
+        states: [],
+      },
+      {
+        id: 0x04,
+        event: 'EV_MSC',
+        description: 'Used to describe miscellaneous input data that do not fit into other types.',
+        events: [ 'MSC_SERIAL', 'MSC_PULSELED', 'MSC_GESTURE', 'MSC_RAW', 'MSC_SCAN', 'MSC_TIMESTAMP' ],
+        states: [],
+        // MSC_SERIAL		0x00
+        // MSC_PULSELED		0x01
+        // MSC_GESTURE		0x02
+        // MSC_RAW			0x03
+        // MSC_SCAN		0x04
+        // MSC_TIMESTAMP		0x05
+
+
+
+      },
+      {
+        id: 0x05,
+        event: 'EV_SW',
+        description: 'Used to describe binary state input switches.',
+        events: [],
+        states: [],
+      },
+      {
+        id: 0x11,
+        event: 'EV_LED',
+        description: 'Used to turn LEDs on devices on and off.',
+        events: [],
+        states: [],
+      },
+      {
+        id: 0x12,
+        event: 'EV_SND',
+        description: 'Used to output sound to devices.',
+        events: [],
+        states: [],
+      },
+      {
+        id: 0x14,
+        event: 'EV_REP',
+        description: 'Used for autorepeating devices.',
+        events: [],
+        states: [],
+      },
+      {
+        id: 0x15,
+        event: 'EV_FF',
+        description: 'Used to send force feedback commands to an input device.',
+        events: [],
+        states: [],
+      },
+      {
+        id: 0x16,
+        event: 'EV_PWR',
+        description: 'A special type for power button and switch input.',
+        events: [],
+        states: [],
+      },
+      {
+        id: 0x17,
+        event: 'EV_FF_STATUS',
+        description: 'Used to receive force feedback device status.',
+        events: [],
+        states: [],
+      }
+    ];
+
+
+
+
+
+
+
+    const inputEventTypesIndex = {};
+    for (let entry of inputEventTypes) {
+      inputEventTypesIndex[entry.id] = entry;
+    }
+
+
+
+
+
+
 export default {
-  buttons: buttons,
-  buttonsIndex: buttonsIndex,
-  axes: axes,
-  axesIndex: axesIndex,
+  buttons,
+  buttonsIndex,
+  axes,
+  axesIndex,
+  inputEventTypes,
+  inputEventTypesIndex,
+
 };
