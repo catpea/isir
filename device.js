@@ -40,6 +40,7 @@ class HumanInterfaceDevice extends EventEmitter {
     const EV_ABS = 3;
 
     const event = {
+      hex: this.#buffer.toString('hex'),
       device: this.#inputDevice,
     };
     const evtype = this.#buffer.readUInt16LE(8);
@@ -75,6 +76,7 @@ class HumanInterfaceDevice extends EventEmitter {
     } else if (evtype === EV_SYN) {
       event.type = "syn";
     } else {
+      log(evtype);
       return false;
     }
 
