@@ -16,7 +16,17 @@ You need to add the user under which this will run to the input group:
 ```bash
 
 usermod -a -G input $USER
+npm i -g isir
 
+```
+
+## Usage
+
+```bash
+
+isir list # show input devices
+isir /dev/input/event{3,5,8} # debug input data (connect a remote shutter, run this command, and start pressing buttons)
+isir train --event play-button /dev/input/event3 # to assign play-button event run this command on a device of choice and press button on your device (in progress)
 
 ```
 
@@ -26,10 +36,4 @@ Functional but still needs hooks, rewrites, and modularization.
 
 ## Credits / Previous Work
 
-This program heavily relies on code from packages listed below.
-
-- https://www.npmjs.com/package/input-event
-- https://www.npmjs.com/package/@tviso/keyboard-linux
-- Read Linux Inputs in node.js, Author: Daniel R.
-- keyboard.js
-- https://github.com/nodebits/linux-joystick
+This program uses some code from https://www.npmjs.com/package/@tviso/keyboard-linux

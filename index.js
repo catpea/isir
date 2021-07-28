@@ -1,7 +1,12 @@
 #!/usr/bin/env node
 
-import keyboardListener from './src/listener.js';
+import { Command } from 'commander/esm.mjs';
+const program = new Command();
 
-new keyboardListener().onKeypress((keyId, deviceName) => {
-    console.log("keyboardListener", keyId, deviceName);
-})
+program
+  .version('0.1.0')
+  .command('list', 'list keyboard devices', {executableFile: 'command/list.js' })
+  .command('train', 'train system to understand device buttons')
+  .command('listen', 'listen packages installed', { isDefault: true, executableFile: 'command/listen.js' });
+
+program.parse(process.argv);
