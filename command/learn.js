@@ -7,7 +7,7 @@ import debug from 'debug';
 import HumanInterfaceDevice from '../device.js';
 import Conf from 'conf';
 
-const config = new Conf({projectSuffix:'catpea'});
+const config = new Conf({projectName: 'isir', projectSuffix:'catpea'});
 const program = new Command();
 const log = debug('listen');
 

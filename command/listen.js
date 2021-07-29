@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { pathExists } from 'fs-extra';
+import fs from 'fs-extra';
 import path from 'path';
 import { spawn } from 'child_process';
 import { Command } from 'commander/esm.mjs';
@@ -10,7 +10,8 @@ import debug from 'debug';
 import HumanInterfaceDevice from '../device.js';
 import Conf from 'conf';
 
-const config = new Conf({projectSuffix:'catpea'});
+const config = new Conf({projectName: 'isir', projectSuffix:'catpea'});
+
 const program = new Command();
 const log = debug('listen');
 
@@ -43,7 +44,7 @@ async function detector(){
       const program = item.name + '.sh';
       const target = path.join(directory, program);
 
-      if(await pathExists( target )){
+      if(await fs.pathExists( target )){
         console.log(`Executing: ${target}`);
         const ls = spawn(target, [], {cwd: directory});
       }
