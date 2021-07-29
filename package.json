@@ -1,7 +1,7 @@
 {
   "name": "isir",
   "type": "module",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Remote control raspberry pi via a Bluetooth keyboard or a remote shutter device.",
   "main": "index.js",
   "bin": {
