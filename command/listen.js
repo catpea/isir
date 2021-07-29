@@ -1,16 +1,22 @@
 #!/usr/bin/env node
 
+import { pathExists } from 'fs-extra';
+import path from 'path';
+import { spawn } from 'child_process';
 import { Command } from 'commander/esm.mjs';
+import { v5 as uuidv5, v4 as uuidv4 } from 'uuid';
+import {debounce} from 'lodash-es';
 import debug from 'debug';
 import HumanInterfaceDevice from '../device.js';
+import Conf from 'conf';
 
+const config = new Conf({projectSuffix:'catpea'});
 const program = new Command();
 const log = debug('listen');
 
 program
-  .option('-t, --type <number>', 'filter by type')
-  .option('-c, --code <number>', 'filter by code')
-  .option('-v, --value <number>', 'filter by value')
+  .requiredOption('-n, --namespace <uuid>', 'UUID Namespace', '3b0ad683-acd4-4d24-83b2-b7d6d2f32cd0')
+  .option('-e, --event-name <name>', 'event name to associate with key combination')
   .option('-d, --debug', 'debug mode')
   .version('1.0.0');
 
@@ -23,47 +29,46 @@ if(devices.length === 0) {
   console.log(`Consider running: isir list`);
 }
 
+const hids = [];
+let pattern = '';
+const execute = debounce(detector, 666);
+async function detector(){
+  const guid = uuidv5( pattern, options.namespace );
+
+  for (const entry in config.store?.events) {
+    const item = config.store.events[entry];
+    if(item.guid == guid){
+      console.log(item);
+      const directory = path.join(process.cwd(), 'bin');
+      const program = item.name + '.sh';
+      const target = path.join(directory, program);
+
+      if(await pathExists( target )){
+        console.log(`Executing: ${target}`);
+        const ls = spawn(target, [], {cwd: directory});
+      }
+    }
+  }
+
+  // const meta = config.get(guid); psssps
+  // if(meta & meta.command){
+  //   console.log(`Executing: ${meta.command}`);
+  // }
+  // console.log(guid, '  ', options.eventName);
+  pattern = '';
+  // hids.map( i=>i.removeAllListeners() );
+  // hids.map( i=>i.close() );
+  // execute.cancel();
+  // process.kill(process.pid);
+}
+
 for (var device of devices) {
   const hid = new HumanInterfaceDevice();
+  hids.push(hid);
   log(`Opening: ${device}`);
   hid.open(device);
-
   hid.on("*", (event) => {
-
-    if(options.type !== undefined){
-      if(event.type == options.type){
-        //console.log(`event.type (${event.type}) == options.type(${options.type})`);
-      }else{
-        return;
-      }
-    }
-
-    if(options.code !== undefined){
-      if(event.code == options.code){
-        //console.log(`event.code (${event.code}) == options.code(${options.code})`);
-      }else{
-        return;
-      }
-    }
-
-    if(options.value !== undefined){
-      if(event.value == options.value){
-        //console.log(`event.value (${event.value}) == options.value(${options.value})`);
-      }else{
-        return;
-      }
-    }
-
-    if(options.debug){
-      console.log(event);
-    }else{
-      console.log(event.text);
-    }
-
+    pattern += event.value;
+    execute();
   });
-
-  // hid.on("keypress", (event) => {
-  //   //console.log(event);
-  // });
-
 }
