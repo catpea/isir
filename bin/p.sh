@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-cvlc ~/Music/*.mp3;
+killall -9 /usr/bin/vlc;
+cvlc --random ~/Music/*.mp3;

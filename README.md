@@ -16,6 +16,8 @@ You need to add the user under which this will run to the input group:
 ```bash
 
 usermod -a -G input $USER
+echo PLEASE REMEMBER TO LOG OUT AND LOG BACK IN
+
 npm i -g isir
 
 ```
@@ -25,8 +27,13 @@ npm i -g isir
 ```bash
 
 isir list # show input devices
-isir /dev/input/event{3,5,8} # debug input data (connect a remote shutter, run this command, and start pressing buttons)
-isir train --event play-button /dev/input/event3 # to assign play-button event run this command on a device of choice and press button on your device (in progress)
+isir watch /dev/input/event{3,5,8} # debug input data (connect a remote shutter, run this command, and start pressing buttons)
+
+isir learn -e p /dev/input/event2 # program will listen for a key combination associated with s.sh command and exit
+isir learn -e s /dev/input/event2 # program will listen for a key combination associated with p.sh command and exit
+
+env DEBUG=* isir listen /dev/input/event1 # now it will recognize your key combinations/buttons and execute commands in bin
+# please note you should run listen in the directory with bin in it, or just cd to the location of isir
 
 ```
 
