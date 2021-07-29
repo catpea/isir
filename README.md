@@ -32,7 +32,7 @@ isir watch /dev/input/event{3,5,8} # debug input data (connect a remote shutter,
 isir learn -e p /dev/input/event2 # program will listen for a key combination associated with s.sh command and exit
 isir learn -e s /dev/input/event2 # program will listen for a key combination associated with p.sh command and exit
 
-env DEBUG=* isir listen /dev/input/event1 # now it will recognize your key combinations/buttons and execute commands in bin
+env DEBUG=* isir listen /dev/input/event2 # now it will recognize your key combinations/buttons and execute commands in bin
 # please note you should run listen in the directory with bin in it, or just cd to the location of isir
 
 ```
