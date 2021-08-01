@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 
 import { open } from "fs/promises";
-import { pathExists } from "fs-extra";
 import EventEmitter from "events";
 import debug from 'debug';
 import metadata from "./metadata.js";
+import fsExtra from 'fs-extra';
+
+const { pathExists } = fsExtra;
 
 const log = debug('hid');
 
