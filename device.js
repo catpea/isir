@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { open } from "fs/promises";
+import { pathExists } from "fs-extra";
 import EventEmitter from "events";
 import debug from 'debug';
 import metadata from "./metadata.js";
@@ -15,10 +16,20 @@ class HumanInterfaceDevice extends EventEmitter {
 
   async open(inputDevice) {
     this.#inputDevice = inputDevice;
+    await this.availability();
     this.#buffer = Buffer.alloc(this.#bufferSize);
     this.#fileHandle = await open(this.#inputDevice, "r");
     log(`HID Opening ${this.#inputDevice}`);
     await this.read();
+
+  }
+
+  async availability() {
+    const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+    while( (await pathExists(this.#inputDevice)) === false ){
+      log(`Waiting for ${this.#inputDevice}`)
+      await sleep(666);
+    }
   }
 
   async read() {
