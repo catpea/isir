@@ -13,7 +13,7 @@ const log = debug('listen');
 
 program
   .requiredOption('-n, --namespace <uuid>', 'UUID Namespace', '3b0ad683-acd4-4d24-83b2-b7d6d2f32cd0')
-  .option('-e, --event-name <name>', 'event name to associate with key combination')
+  .option('-m, --macro <name>', 'name of macro to associate with key combination')
   .option('-d, --debug', 'debug mode')
   .version('1.0.0');
 
@@ -22,8 +22,8 @@ const options = program.opts();
 const devices = program.args;
 
 if(devices.length === 0) {
-  console.log(`You must specify a device ex: isir /dev/input/event{3,5,8}`);
-  console.log(`Consider running: isir list`);
+  console.log(`You must specify a device ex: isir listen -n iddqd /dev/input/event{2,5}`);
+  console.log(`Consider running: isir list to see potential input devices`);
 }
 
 const hids = [];
@@ -32,9 +32,9 @@ const execute = debounce(detector, 666);
 
 function detector(){
   const guid = uuidv5( pattern, options.namespace );
-  console.log(guid, ' ', options.eventName);
-  config.set(`events.${options.eventName}.guid`, guid);
-  config.set(`events.${options.eventName}.name`, options.eventName);
+  log(guid, ' ', options.macro);
+  config.set(`pattern.${guid}.macro`, options.macro);
+
   pattern = '';
   hids.map( i=>i.removeAllListeners() );
   hids.map( i=>i.close() );

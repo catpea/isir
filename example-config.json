@@ -1,0 +1,63 @@
+{
+	"macro": {
+		"play": {
+			"command": "play.sh"
+		},
+		"stop": {
+			"command": "stop.sh"
+		},
+		"next": {
+			"command": "list.sh",
+			"data": [
+				"next"
+			]
+		},
+		"prev": {
+			"command": "list.sh",
+			"data": [
+				"prev"
+			]
+		},
+		"loud": {
+			"command": "cans.sh",
+			"data": [
+				"loud",
+				"hard"
+			]
+		},
+		"soft": {
+			"command": "cans.sh",
+			"data": [
+				"soft"
+			]
+		}
+	},
+	"pattern": {
+		"525094d7-88aa-59ae-8e09-b2b3365f989d": {
+			"macro": "play"
+		},
+		"a89c2671-be39-5096-a1a7-80d17125042c": {
+			"macro": "stop"
+		},
+		"d772ad3d-830d-4bf9-8dde-df0d4836fea8": {
+			"macro": "next"
+		},
+		"b3a8f352-8686-4d43-beb9-df1c1f171ea9": {
+			"macro": "prev"
+		},
+		"5d892c25-f1ed-5a8e-97ef-94b349b34e6c": {
+			"macro": "iddqd"
+		},
+		"b2dce68b-3f93-5aa9-8c6f-ec9f962d7ef2": {
+			"macro": "idkfa"
+		}
+	},
+	"complex": {
+		"322a9c06-e24b-4da2-8749-01f31fb2e494": {
+			"macro": "loud"
+		},
+		"354cd6ed-c4f6-4744-9b17-a1bffb72e325": {
+			"macro": "soft"
+		}
+	}
+}

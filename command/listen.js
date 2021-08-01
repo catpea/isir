@@ -17,7 +17,6 @@ const log = debug('listen');
 
 program
   .requiredOption('-n, --namespace <uuid>', 'UUID Namespace', '3b0ad683-acd4-4d24-83b2-b7d6d2f32cd0')
-  .option('-e, --event-name <name>', 'event name to associate with key combination')
   .option('-d, --debug', 'debug mode')
   .version('1.0.0');
 
@@ -33,34 +32,27 @@ if(devices.length === 0) {
 const hids = [];
 let pattern = '';
 const execute = debounce(detector, 666);
+
 async function detector(){
   const guid = uuidv5( pattern, options.namespace );
-
-  for (const entry in config.store?.events) {
-    const item = config.store.events[entry];
-    if(item.guid == guid){
-      console.log(item);
-      const directory = path.join(process.cwd(), 'bin');
-      const program = item.name + '.sh';
-      const target = path.join(directory, program);
-
-      if(await fs.pathExists( target )){
+  const patternExists = config.store.pattern[guid];
+  if(patternExists){
+    const macroName = config.store.pattern[guid].macro;
+    const macroExists = config.store.macro[macroName];
+    if(macroExists){
+      const {command: commandName, data: argumentVector} = config.store.macro[macroName];
+      const directory = config.store.system.options.commands?path.resolve(config.store.system.options.commands):path.join(process.cwd(), 'commands');
+      const target = path.join(directory, commandName);
+      const commandExists = await fs.pathExists( target );
+      if(commandExists){
         console.log(`Executing: ${target}`);
-        const ls = spawn(target, [], {cwd: directory});
+        const ls = spawn(target, argumentVector||[], {cwd: directory});
       }
+    }else{
+      log(`Macro: "${macroName}" does not exist run: isir conf macro ${macroName} command beep # to associate the unix beep command with macro ${macroName}`)
     }
   }
-
-  // const meta = config.get(guid); psssps
-  // if(meta & meta.command){
-  //   console.log(`Executing: ${meta.command}`);
-  // }
-  // console.log(guid, '  ', options.eventName);
   pattern = '';
-  // hids.map( i=>i.removeAllListeners() );
-  // hids.map( i=>i.close() );
-  // execute.cancel();
-  // process.kill(process.pid);
 }
 
 for (var device of devices) {
@@ -73,3 +65,11 @@ for (var device of devices) {
     execute();
   });
 }
+
+// process.on('SIGINT', function() {
+//   hids.map( i=>i.removeAllListeners() );
+//   hids.map( i=>i.close() );
+//   execute.cancel();
+//   process.exit();
+//   //process.kill(process.pid);
+// });
